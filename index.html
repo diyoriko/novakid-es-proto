@@ -37,17 +37,21 @@
   .item .vs{margin-left:auto;display:flex;gap:3px}
   .item .vs i{width:6px;height:6px;border-radius:50%;background:#cfc9df}
   .item.active .vs i{background:var(--violet)}
+  .item.story{color:var(--violet-2);font-weight:700}
+  .item.story .star{color:var(--violet)}
+  .item.story.active{background:#efeaff}
   .foot{padding:14px 20px;border-top:1px solid var(--line-2);font-size:12px;color:var(--muted)}
   .foot a{color:var(--violet);text-decoration:none;font-weight:600}
 
   /* ---------- Top bar ---------- */
   .main{min-width:0;min-height:0;display:flex;flex-direction:column}
   .topbar{
-    height:var(--top);flex:0 0 var(--top);display:flex;align-items:center;gap:16px;
+    height:var(--top);flex:0 0 var(--top);display:flex;align-items:center;gap:14px;
     padding:0 22px;background:var(--panel);border-bottom:1px solid var(--line);
   }
   .topbar .title{font-size:16px;font-weight:700}
   .topbar .native{font-size:12px;color:var(--muted);padding:3px 9px;background:var(--line-2);border-radius:20px;font-weight:600}
+  .topbar .goal{font-size:11.5px;color:var(--violet-2);padding:3px 10px;background:#efeaff;border-radius:20px;font-weight:700;white-space:nowrap}
   .seg{margin-left:auto;display:flex;background:var(--line-2);border-radius:10px;padding:3px}
   .seg button{
     border:0;background:transparent;font:inherit;font-size:13px;font-weight:600;color:#57536a;
@@ -58,10 +62,12 @@
   .seg button:disabled{opacity:.3;cursor:not-allowed}
   .hamb{display:none;border:0;background:transparent;cursor:pointer;padding:6px;margin-left:-6px}
   .hamb svg{width:22px;height:22px}
+  body.cover-mode .seg, body.cover-mode #native, body.cover-mode #goal{display:none}
 
   /* ---------- Stage ---------- */
   .stage{flex:1;min-height:0;overflow:auto;display:grid;place-items:start center;padding:36px 28px 60px}
-  .frame{margin:auto}
+  .frame{margin:auto;animation:frameIn .28s ease}
+  @keyframes frameIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
 
   /* Desktop browser chrome */
   .browser{width:min(100%,var(--w,1280px));background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
@@ -110,6 +116,42 @@
   .device.tablet .scr{width:768px;border-radius:16px;max-height:min(880px,calc(100vh - var(--top) - 190px))}
   .device .notch{position:absolute;top:13px;left:50%;transform:translateX(-50%);width:130px;height:24px;background:#0d0d12;border-radius:0 0 16px 16px;z-index:4}
 
+  /* ---------- Cover (product story) ---------- */
+  .cover{width:100%;max-width:1040px;margin:0 auto;padding:14px 10px 48px;animation:coverIn .45s ease}
+  @keyframes coverIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .cover .eyebrow{font-size:12px;letter-spacing:2.4px;font-weight:800;color:var(--violet);text-transform:uppercase}
+  .cover-h1{font-size:clamp(30px,4.9vw,56px);line-height:1.05;letter-spacing:-.022em;font-weight:800;margin:16px 0 0;color:var(--ink)}
+  .cover-sub{font-size:clamp(15px,1.55vw,19px);line-height:1.5;color:var(--muted);max-width:660px;margin:20px 0 0}
+  .pillars{margin:42px 0 0;border-top:1px solid var(--line)}
+  .pillar{
+    display:grid;grid-template-columns:50px 1fr auto;gap:24px;align-items:center;width:100%;text-align:left;
+    background:transparent;border:0;border-bottom:1px solid var(--line);padding:26px 10px;cursor:pointer;font:inherit;
+    transition:background .15s ease;
+  }
+  .pillar:hover{background:#faf9fe}
+  .p-no{font-size:15px;font-weight:800;color:#c3bed3;letter-spacing:.5px}
+  .p-label{font-size:12.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#6f6b80}
+  .p-stat{display:flex;align-items:baseline;gap:11px;margin:7px 0 0;flex-wrap:wrap}
+  .p-stat .from{font-size:24px;font-weight:700;color:#bdb8cc;text-decoration:line-through;text-decoration-color:#ddd8ea}
+  .p-stat .arr{color:#bdb8cc;font-size:17px}
+  .p-stat .to{font-size:clamp(30px,3.4vw,42px);font-weight:800;color:var(--violet-2);letter-spacing:-.02em;line-height:1}
+  .p-stat.qual .to{font-size:clamp(20px,2.2vw,26px)}
+  .p-bar{position:relative;height:7px;border-radius:7px;background:var(--line-2);margin:13px 0 0;max-width:380px}
+  .p-bar i{position:absolute;left:0;top:0;bottom:0;width:var(--from);background:var(--violet);border-radius:7px;transition:width .8s cubic-bezier(.22,.61,.36,1)}
+  .cover.in .p-bar i{width:var(--to)}
+  .p-bar b{position:absolute;top:-3px;bottom:-3px;left:var(--from);width:2px;background:#cfc9df}
+  .p-why{font-size:13.5px;color:var(--muted);margin:11px 0 0;max-width:540px;line-height:1.5}
+  .p-see{font-size:13px;font-weight:700;color:var(--violet);white-space:nowrap;opacity:.55;transition:opacity .15s ease}
+  .pillar:hover .p-see{opacity:1}
+  .cover-cta{display:flex;align-items:center;gap:22px;margin:40px 0 0;flex-wrap:wrap}
+  .enter{
+    background:var(--violet);color:#fff;border:0;border-radius:14px;padding:16px 30px;font:inherit;font-size:16px;font-weight:700;
+    cursor:pointer;box-shadow:0 14px 32px rgba(109,70,252,.3);transition:transform .15s ease,background .15s ease;
+  }
+  .enter:hover{background:var(--violet-2);transform:translateY(-1px)}
+  .cover-src{font-size:12.5px;color:#9a96a8}
+  .cover-src b{color:#6f6b80;font-weight:700}
+
   /* ---------- Flow controls ---------- */
   .controls{width:100%;max-width:940px;margin:20px auto 0;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
   .nav-btn{border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 17px;font:inherit;font-size:13px;font-weight:600;color:#3a3746;cursor:pointer;display:inline-flex;align-items:center;gap:8px;max-width:46%}
@@ -136,9 +178,13 @@
     .device.mobile .scr{width:min(375px,82vw)}
     .reveal-tgl{order:3;width:100%;justify-content:center;margin-top:4px}
   }
+  @media (max-width:700px){
+    .pillar{grid-template-columns:40px 1fr;gap:16px;padding:22px 4px}
+    .p-see{grid-column:2;justify-self:start;margin-top:10px;opacity:1}
+  }
 </style>
 </head>
-<body class="reveal">
+<body class="reveal cover-mode">
   <aside class="sidebar">
     <div class="brand">
       <div class="logo">NOV<b>&#9650;</b>KID</div>
@@ -155,8 +201,9 @@
       <button class="hamb" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">
         <svg viewBox="0 0 24 24" fill="none" stroke="#17151f" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
-      <div class="title" id="title">Dashboard</div>
-      <span class="native" id="native">1280 × 1897</span>
+      <div class="title" id="title">Product story</div>
+      <span class="native" id="native"></span>
+      <span class="goal" id="goal" style="display:none"></span>
       <div class="seg" id="seg" role="tablist">
         <button data-v="desktop" role="tab" onclick="setView('desktop')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M9 20h6M12 17v3"/></svg>Desktop</button>
@@ -173,7 +220,7 @@
 /* Hotspot coords are % of the screen image (resolution-independent, so 1x/2x doesn't matter).
    {x,y,w,h} = top-left + size in %, to = target screen key, t = tooltip, g = "guess" (hover-only, no highlight). */
 const SCREENS = [
-  {key:'dashboard', name:'Dashboard', group:'Home', next:'schedule',
+  {key:'dashboard', name:'Dashboard', group:'Home', next:'schedule', goal:'Repeat engagement · 71→90%',
     v:{desktop:'dashboard-desktop.png', tablet:'dashboard-tablet.png', mobile:'dashboard-mobile.png'},
     n:{desktop:'1280 × 1897', tablet:'768 × 2712', mobile:'375 × 3203'}, w:{desktop:1280,tablet:768,mobile:375},
     hot:{
@@ -195,7 +242,7 @@ const SCREENS = [
         {x:4,y:57,w:92,h:14,to:'appdownload',t:'Get the app'}
       ]
     }},
-  {key:'afterpurchase', name:'After purchase', group:'Onboarding', next:'appdownload',
+  {key:'afterpurchase', name:'After purchase', group:'Onboarding', next:'appdownload', goal:'First lesson booked · 48→70%',
     v:{desktop:'afterpurchase-desktop.png', tablet:'afterpurchase-tablet.png', mobile:'afterpurchase-mobile.png'},
     n:{desktop:'1280 × 798', tablet:'768 × 977', mobile:'375 × 867'}, w:{desktop:1280,tablet:768,mobile:375},
     hot:{
@@ -203,7 +250,7 @@ const SCREENS = [
       tablet:[{x:20,y:85,w:60,h:7,to:'appdownload',t:'Continue',g:1}],
       mobile:[{x:8,y:87,w:84,h:6,to:'appdownload',t:'Continue',g:1}]
     }},
-  {key:'appdownload', name:'App download', group:'Onboarding', next:'dashboard',
+  {key:'appdownload', name:'App download', group:'Onboarding', next:'dashboard', goal:'First lesson booked · 48→70%',
     v:{desktop:'appdownload-desktop.png', tablet:'appdownload-tablet.png', mobile:'appdownload-mobile.png'},
     n:{desktop:'1440 × 795', tablet:'768 × 1018', mobile:'375 × 812'}, w:{desktop:1440,tablet:768,mobile:375},
     hot:{
@@ -211,7 +258,7 @@ const SCREENS = [
       tablet:[{x:20,y:82,w:60,h:9,to:'dashboard',t:'Continue',g:1}],
       mobile:[{x:8,y:83,w:84,h:10,to:'dashboard',t:'Continue',g:1}]
     }},
-  {key:'schedule', name:'Schedule', group:'Scheduling', next:'booking',
+  {key:'schedule', name:'Schedule', group:'Scheduling', next:'booking', goal:'Repeat engagement · 71→90%',
     v:{desktop:'schedule-desktop.png', mobile:'schedule-mobile.png'},
     n:{desktop:'1280 × 844', mobile:'375 × 844'}, w:{desktop:1280,mobile:375},
     hot:{
@@ -222,7 +269,7 @@ const SCREENS = [
       ],
       mobile:[{x:8,y:5,w:84,h:6,to:'booking',t:'Book lessons',g:1}]
     }},
-  {key:'schedule-mu', name:'Schedule · Multiple kids', group:'Scheduling', next:'booking',
+  {key:'schedule-mu', name:'Schedule · Multiple kids', group:'Scheduling', next:'booking', goal:'1-1 management · ARPU↑',
     v:{desktop:'schedule-mu-desktop.png', mobile:'schedule-mu-mobile.png'},
     n:{desktop:'1280 × 844', mobile:'375 × 844'}, w:{desktop:1280,mobile:375},
     hot:{
@@ -232,7 +279,7 @@ const SCREENS = [
         {x:64.5,y:17,w:8,h:4,to:'timezone',t:'Change time zone'}
       ]
     }},
-  {key:'booking', name:'Booking lesson', group:'Scheduling', next:'speaking',
+  {key:'booking', name:'Booking lesson', group:'Scheduling', next:'speaking', goal:'First lesson booked · 48→70%',
     v:{desktop:'booking-desktop.png', mobile:'booking-mobile.png'},
     n:{desktop:'1280 × 1133', mobile:'375 × 1310'}, w:{desktop:1280,mobile:375},
     hot:{
@@ -246,7 +293,7 @@ const SCREENS = [
         {x:8,y:92,w:84,h:4,to:'speaking',t:'Save and continue',g:1}
       ]
     }},
-  {key:'speaking', name:'Speaking practice', group:'Scheduling', next:'dashboard',
+  {key:'speaking', name:'Speaking practice', group:'Scheduling', next:'dashboard', goal:'First lesson booked · 48→70%',
     v:{desktop:'speaking-desktop.png', tablet:'speaking-tablet.png', mobile:'speaking-mobile.png'},
     n:{desktop:'1280 × 900', tablet:'768 × 900', mobile:'375 × 812'}, w:{desktop:1280,tablet:768,mobile:375},
     hot:{
@@ -261,29 +308,76 @@ const SCREENS = [
     n:{desktop:'1779 × 948'}, w:{desktop:1779},
     hot:{desktop:[{x:35,y:82,w:30,h:9,to:'booking',t:'Confirm',g:1}]}},
 ];
-const ROUTE_ALIAS = {home:'dashboard', '':'dashboard'};
+
+/* Product story cover — goals sourced from Rodion (business impact of ES 2.0). */
+const PILLARS = [
+  {no:'01', label:'First lesson booked', from:'48%', to:'70%', fromPct:48, toPct:70,
+   why:'Parents who book a class within 15 minutes of signing up — the earliest retention signal. Post-purchase onboarding walks them straight into it.',
+   go:'booking', see:'See the booking flow →'},
+  {no:'02', label:'Repeat engagement', from:'71%', to:'90%', fromPct:71, toPct:90,
+   why:'Families reaching a 2nd recurring class. In-product Schedule &amp; Progress keep the habit visible and easy to keep.',
+   go:'dashboard', see:'See the dashboard →'},
+  {no:'03', label:'1-1 revenue levers', qual:true, from:'Upsell A/B', to:'ARPU ↑',
+   why:'Self-serve 1-1 management (for clients who bought it) unlocks multiple upsell tests — a direct lever on ARPU &amp; Cash Revenue.',
+   go:'schedule-mu', see:'See 1-1 management →'},
+];
+
+const INTRO_KEY='intro';
+const ROUTE_ALIAS = {home:INTRO_KEY, '':INTRO_KEY, intro:INTRO_KEY, story:INTRO_KEY};
 const VIEWS = ['desktop','tablet','mobile'];
-let cur = {key:'dashboard', view:'desktop'};
+let cur = {key:INTRO_KEY, view:'desktop'};
 
 function byKey(k){return SCREENS.find(s=>s.key===k)}
 function views(s){return VIEWS.filter(v=>s.v[v])}
 function flowNext(k){const s=byKey(k); return s&&s.next&&byKey(s.next)?s.next:null;}
 function flowPrev(k){const s=SCREENS.find(x=>x.next===k); return s?s.key:null;}
-
-function go(key){ if(byKey(key)) location.hash='#/'+key; }
+function go(key){ location.hash='#/'+key; document.body.classList.remove('nav-open'); }
 
 function renderNav(){
   const nav=document.getElementById('nav'); nav.innerHTML='';
+  const story=document.createElement('div');
+  story.className='item story'+(cur.key===INTRO_KEY?' active':'');
+  story.onclick=()=>go(INTRO_KEY);
+  story.innerHTML='<span class="star">&#9733;</span><span>Product story</span>';
+  nav.appendChild(story);
   let g=null;
   SCREENS.forEach(s=>{
     if(s.group!==g){g=s.group; const h=document.createElement('div');h.className='grp';h.textContent=g;nav.appendChild(h);}
     const el=document.createElement('div');
     el.className='item'+(s.key===cur.key?' active':'');
-    el.onclick=()=>{go(s.key); document.body.classList.remove('nav-open');};
+    el.onclick=()=>go(s.key);
     const dots=views(s).map(()=>'<i></i>').join('');
     el.innerHTML='<span>'+s.name+'</span><span class="vs">'+dots+'</span>';
     nav.appendChild(el);
   });
+}
+
+function renderCover(){
+  document.body.classList.add('cover-mode');
+  document.getElementById('title').textContent='Product story';
+  renderNav();
+  const pill=PILLARS.map(p=>{
+    const stat = p.qual
+      ? '<div class="p-stat qual"><span class="to">'+p.to+'</span></div>'
+      : '<div class="p-stat"><span class="from">'+p.from+'</span><span class="arr">&rarr;</span><span class="to">'+p.to+'</span></div>'
+        +'<div class="p-bar" style="--from:'+p.fromPct+'%;--to:'+p.toPct+'%"><i></i><b></b></div>';
+    return '<button class="pillar" onclick="go(\''+p.go+'\')">'
+      +'<div class="p-no">'+p.no+'</div>'
+      +'<div class="p-body"><div class="p-label">'+p.label+'</div>'+stat+'<div class="p-why">'+p.why+'</div></div>'
+      +'<div class="p-see">'+p.see+'</div></button>';
+  }).join('');
+  const stage=document.getElementById('stage');
+  stage.innerHTML=
+    '<div class="cover" id="cover">'
+    +'<div class="eyebrow">Easy Start 2.0 · Sprint 149</div>'
+    +'<h1 class="cover-h1">From signup to a booked,<br>recurring lesson.</h1>'
+    +'<p class="cover-sub">Easy Start 2.0 adds post-purchase onboarding, in-product Schedule &amp; Progress, and self-serve 1-1 management — turning a first session into a lasting habit, and opening new revenue levers.</p>'
+    +'<div class="pillars">'+pill+'</div>'
+    +'<div class="cover-cta"><button class="enter" onclick="go(\'dashboard\')">Enter the prototype &darr;</button>'
+    +'<span class="cover-src">Live 1:1 build · <b>8 screens</b> · desktop / tablet / mobile · press <b>&rarr;</b> to enter</span></div>'
+    +'</div>';
+  stage.scrollTop=0;
+  requestAnimationFrame(()=>{const c=document.getElementById('cover'); if(c) c.classList.add('in');});
 }
 
 function hotHTML(list){
@@ -295,13 +389,17 @@ function hotHTML(list){
 }
 
 function render(){
-  const s=byKey(cur.key); if(!s) return;
+  if(cur.key===INTRO_KEY){ renderCover(); return; }
+  document.body.classList.remove('cover-mode');
+  const s=byKey(cur.key); if(!s){ cur.key=INTRO_KEY; return renderCover(); }
   const av=views(s);
   if(!av.includes(cur.view)) cur.view = av.includes('desktop')?'desktop':av[0];
   const view=cur.view;
 
   document.getElementById('title').textContent=s.name;
   document.getElementById('native').textContent=s.n[view]||'';
+  const goalEl=document.getElementById('goal');
+  if(s.goal){ goalEl.textContent=s.goal; goalEl.style.display=''; } else { goalEl.style.display='none'; }
   document.querySelectorAll('.seg button').forEach(b=>{
     const v=b.dataset.v; b.disabled=!s.v[v]; b.setAttribute('aria-selected', String(v===view));
   });
@@ -353,13 +451,17 @@ function setView(v){ const s=byKey(cur.key); if(!s||!s.v[v])return; cur.view=v; 
 function fromHash(){
   const raw=(location.hash||'').replace(/^#\/?/,'').split(/[\/?]/)[0];
   const key=ROUTE_ALIAS[raw]!==undefined?ROUTE_ALIAS[raw]:raw;
-  cur.key = byKey(key)?key:'dashboard';
+  cur.key = (key===INTRO_KEY||byKey(key))?key:INTRO_KEY;
   render();
 }
 
 window.addEventListener('hashchange',fromHash);
 window.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT') return;
+  if(cur.key===INTRO_KEY){
+    if(e.key==='ArrowRight'||e.key==='Enter'){ e.preventDefault(); go('dashboard'); }
+    return;
+  }
   if(e.key==='ArrowRight'){const k=flowNext(cur.key); if(k){e.preventDefault();go(k);}}
   else if(e.key==='ArrowLeft'){const k=flowPrev(cur.key); if(k){e.preventDefault();go(k);}}
 });
